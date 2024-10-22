@@ -36,8 +36,9 @@ model UserTasks {
   task    Tasks @relation(fields: [idTasks], references: [id])
   idUser  Int
   user    User  @relation(fields: [idUser], references: [id])
+  updatedAt              DateTime            @updatedAt
   points  Float @default(10)
-  finishedAt DateTime
+  finishedAt DateTime @default(now())
   status Answer @default(PENDENT)
 }
 

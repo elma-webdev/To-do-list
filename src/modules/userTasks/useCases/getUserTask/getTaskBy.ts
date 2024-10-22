@@ -13,17 +13,8 @@ export class getTaskBy{
         const userId = 1; // ID do usuário que você deseja verificar
 
         // Conta o número de tarefas associadas ao usuário no dia de hj
-        const tasksCount = await Prisma.userTasks.count({
-          where: {
-            idUser: userId,
-            task: {
-              createdAt: {
-                gte: inicioDoDia, // Data a partir do início do dia
-                lte: fimDoDia,
-              },
-            },
-          },
-        });
+        const tasksCount = await Prisma.userTasks.findMany({
+            });
       
           return tasksCount
         

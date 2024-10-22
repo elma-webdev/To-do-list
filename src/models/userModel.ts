@@ -1,3 +1,4 @@
+import { finished } from "stream";
 import {z} from "zod"
 
 export const userValidation = z.object({
@@ -27,8 +28,12 @@ export const UsertaskValidation = z.object({
   idUser: z.number(),
   points: z.number(),
   status:z.enum(["PENDENT", "CONCLUDE", "QUIT"]),
+});
+
+export const finishedAtValidation = z.object({
   finishedAt:z.coerce.date().min(new Date, {message:"the date cannot be under today"})
 });
+
 
 export const passValidation = z.object({
   password: z

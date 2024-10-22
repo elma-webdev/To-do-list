@@ -2,12 +2,13 @@ import { createTaskDTO } from "./../../dtos/createTaskDTO";
 import { appError } from "../../../../error/appError";
 import { Prisma } from "../../../../prisma";
 import { UserTasks } from "@prisma/client";
-Error
+Error;
 export class createUserTask {
   async create(
     userId: number,
-    { idTasks, idUser, points, status, finishedAt}: createTaskDTO
-  ):Promise<UserTasks> {
+    taskId: number,
+    { idTasks, idUser, points, status }: createTaskDTO
+  ): Promise<UserTasks> {
     try {
       const MAX_TASKS_PER_DAY = 3;
 
@@ -17,7 +18,8 @@ export class createUserTask {
       });
 
       if (!user) {
-        throw new appError( "User not found", 400);
+          console.error(appError);
+        throw new appError("User not found", 400);
       }
 
       // Step 2: Verify if the task exists
@@ -26,7 +28,21 @@ export class createUserTask {
       });
 
       if (!task) {
-         throw new appError("Task not found", 400);
+          console.error(appError);
+        throw new appError("Task not found", 400);
+      }
+
+      const TaskWasBeingAssigmentToTheSameUser =
+        await Prisma.userTasks.findFirst({
+          where: {
+            AND: [{ idUser: userId }, { idTasks: taskId }],
+          },
+        });
+
+      //consultar se nao existe uma mesma tarefa atribuida mais de uma vez pro usuario
+      if (TaskWasBeingAssigmentToTheSameUser) {
+          console.error(appError);
+        throw new appError("Task already assigned by the same user", 400);
       }
 
       // Consultar quantas tarefas já estão atribuídas ao usuário naquele dia
@@ -38,7 +54,11 @@ export class createUserTask {
       });
 
       if (tarefasNoDia >= MAX_TASKS_PER_DAY) {
-      throw new appError("Task limit reached. Complete a task to add a new one.", 400);
+          console.error(appError);
+        throw new appError(
+          "Task limit reached. Complete a task to add a new one.",
+          400
+        );
       }
 
       // Criar a nova tarefa
@@ -48,14 +68,14 @@ export class createUserTask {
           idTasks,
           points,
           status,
-          finishedAt,
         },
       });
 
       return tarefa;
     } catch (error) {
       // Tratamento de erro genérico
-      throw new appError(`Erro ao criar tarefa`, 500);
+      console.error(error);
+      throw new appError("Erro ao criar tarefa", 500);
     }
   }
 }
