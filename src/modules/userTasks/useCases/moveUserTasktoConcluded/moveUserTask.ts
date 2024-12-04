@@ -1,7 +1,6 @@
 import { appError } from "../../../../error/appError";
 import { Prisma } from "../../../../prisma";
 import { UserTasks } from "@prisma/client";
-import { IcreateTaskDTO } from "../../dtos/createTaskDTO";
 
 export class moveUserTask {
   async editar(id: number): Promise<UserTasks> {
@@ -30,8 +29,7 @@ export class moveUserTask {
           //points: alterar o valor do point com base a comparacao do deadline com o updatedAt, mas isso no frontend
         },
       });
-     
-      // if(task.updatedAt)
+
       return task;
     } catch (err) {
       throw new appError(`Erro ao concluir tarefa atribuída`, 500);

@@ -2,7 +2,6 @@ import { Router } from "express";
 import { createUserTaskController } from "../modules/userTasks/useCases/createTask/createUserTaskController";
 import { getTaskByController } from "../modules/userTasks/useCases/getUserTask/getTaskByController";
 import { UpdateMoveTaskController } from "../modules/userTasks/useCases/moveUserTasktoConcluded/moveUserTaskController";
-UpdateMoveTaskController
 
 export const userTaskRoutes=Router()
 

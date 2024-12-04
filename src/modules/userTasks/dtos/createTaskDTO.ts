@@ -6,7 +6,3 @@ export interface createTaskDTO {
   points: number;
   status: Answer;
 }
-
-export interface IcreateTaskDTO {
-  finishedAt: Date;
-}
